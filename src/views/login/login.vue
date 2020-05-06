@@ -2,7 +2,7 @@
  * @Description:登录页
  * @Author: ZHAN HANG
  * @Date: 2020-05-05 14:52:06
- * @LastEditTime: 2020-05-06 13:07:11
+ * @LastEditTime: 2020-05-06 13:29:03
  * @LastEditors: ZHAN HANG
  -->
 <template>
@@ -170,6 +170,7 @@ export default {
       if (this.submitBtn == "登录") console.log("login");
       else {
         console.log("register");
+        console.log("test");
       }
     }
   }
