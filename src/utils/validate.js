@@ -1,8 +1,8 @@
 /*
- * @Description:验证
+ * @Description:
  * @Author: ZHAN HANG
  * @Date: 2020-05-05 17:05:13
- * @LastEditTime: 2020-05-06 12:47:54
+ * @LastEditTime: 2020-05-08 15:17:37
  * @LastEditors: ZHAN HANG
  */
 /* 特殊字符过滤 */
@@ -30,6 +30,6 @@ export function validateVPassword (value) {
 
 /* 验证验证码 6位验证码，包含数字字母*/
 export function validateVCheckCode (value) {
-  let reg = "/^[a-zo-9]{6}$/";
+  let reg = /^[a-z0-9]{6}$/;
   return !reg.test(value) ? true : false;
 }

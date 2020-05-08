@@ -2,7 +2,7 @@
  * @Description:登录页
  * @Author: ZHAN HANG
  * @Date: 2020-05-05 14:52:06
- * @LastEditTime: 2020-05-06 13:35:28
+ * @LastEditTime: 2020-05-08 15:26:28
  * @LastEditors: ZHAN HANG
  -->
 <template>
@@ -65,13 +65,19 @@
                 ></el-input>
               </el-col>
               <el-col :span="10">
-                <el-button type="success" class="block">获取验证码</el-button>
+                <el-button type="success" class="block" @click="getCode"
+                  >获取验证码</el-button
+                >
               </el-col>
             </el-row>
           </el-form-item>
-          <el-button type="primary" class="block" @click="submit()">{{
-            submitBtn
-          }}</el-button>
+          <el-button
+            type="primary"
+            class="block"
+            @click="submit()"
+            :disabled="submitDisable"
+            >{{ model === "login" ? "登录" : "注册" }}</el-button
+          >
         </el-form>
       </el-col>
       <!-- 表单结束 -->
@@ -80,6 +86,8 @@
 </template>
 
 <script>
+import { reactive, ref, onMounted } from "@vue/composition-api";
+import { GetSms } from "@/api/login";
 import {
   strpscript,
   validateVEmail,
@@ -88,10 +96,12 @@ import {
 } from "@/utils/validate";
 export default {
   name: "login",
-  data() {
-    /* 表单校验 */
+  setup(props, { refs, root }) {
+    /**
+     * 表单校验
+     */
     // 邮箱验证
-    var validateEmail = (rule, value, callback) => {
+    let validateEmail = (rule, value, callback) => {
       if (value == "") callback(new Error("邮箱不能为空！"));
       else if (validateVEmail(value)) {
         callback(new Error("邮箱格式有误！"));
@@ -100,7 +110,15 @@ export default {
       }
     };
     // 密码验证
-    var validatePassword = (rule, value, callback) => {
+    let validatePassword = (rule, value, callback) => {
+      console.log(strpscript(value));
+      if (value == "") callback(new Error("密码不能为空！"));
+      else if (validateVPassword(value)) {
+        callback(new Error("密码格式有误！"));
+      } else callback();
+    };
+    // 密码重复验证
+    let validateCheckPassword = (rule, value, callback) => {
       console.log(strpscript(value));
       if (value == "") callback(new Error("密码不能为空！"));
       else if (validateVPassword(value)) {
@@ -108,7 +126,7 @@ export default {
       } else callback();
     };
     // 验证码验证
-    var validateCheckCode = (rule, value, callback) => {
+    let validateCheckCode = (rule, value, callback) => {
       if (value == "") callback(new Error("验证码不能为空！"));
       else if (validateVCheckCode(value)) {
         callback(new Error("验证码格式错误！"));
@@ -116,60 +134,107 @@ export default {
         callback();
       }
     };
-    return {
-      // 表单数据绑定
-      loginForm: {
-        email: "",
-        password: "",
-        checkCode: ""
-      },
-      // 登录注册切换,select用于判读是否选中
-      navTab: [
-        { text: "登录", select: true, type: "login" },
-        { text: "注册", select: false, type: "register" }
+    /**
+     * 数据区
+     */
+    // 登录注册切换,select用于判读是否选中
+    const navTab = reactive([
+      { text: "登录", select: true, type: "login" },
+      { text: "注册", select: false, type: "register" }
+    ]);
+    // 表单绑定数据
+    const loginForm = reactive({
+      email: "",
+      password: "",
+      checkPassword: "",
+      checkCode: ""
+    });
+    // 表单验证
+    const rules = reactive({
+      email: [
+        {
+          validator: validateEmail,
+          trigger: "blur"
+        }
       ],
-      // 重复密码模块值
-      model: "login",
-      // 提交按钮的值
-      submitBtn: "登录",
-      rules: {
-        email: [
-          {
-            validator: validateEmail,
-            trigger: "blur"
-          }
-        ],
-        password: [
-          {
-            validator: validatePassword,
-            trigger: "blur"
-          }
-        ],
-        checkCode: [
-          {
-            validator: validateCheckCode,
-            trigger: "blur"
-          }
-        ]
-      }
-    };
-  },
-  methods: {
-    toggleTab(item) {
+      password: [
+        {
+          validator: validatePassword,
+          trigger: "blur"
+        }
+      ],
+      checkPassword: [
+        {
+          validator: validateCheckPassword,
+          trigger: "blur"
+        }
+      ],
+      checkCode: [
+        {
+          validator: validateCheckCode,
+          trigger: "blur"
+        }
+      ]
+    });
+    // 重复密码模块值
+    const model = ref("login");
+    // 提交按钮的值
+    const submitBtn = ref("登录");
+    // 按钮禁用状态
+    const submitDisable = ref(true);
+    /**
+     * 声明函数
+     */
+    const toggleTab = item => {
       // 用一个for循环将navTab的select的值改成相反
-      this.navTab.forEach(element => {
+      navTab.forEach(element => {
         element.select = false;
       });
       item.select = !item.select;
-      console.log(item);
-      this.model = item.type;
-      this.submitBtn = item.text;
-    },
+      model.value = item.type;
+    };
     // 登录
-    submit() {
-      if (this.submitBtn == "登录") console.log("login");
+    const submit = () => {
+      if (submitBtn.value == "登录") console.log("login");
       else console.log("register");
-    }
+    };
+    // 获取验证码
+    const getCode = () => {
+      if (loginForm.email == "") {
+        root.$message.error("邮箱不能为空");
+        return false;
+      }
+      if (validateVEmail(loginForm.email)) {
+        root.$message.error("邮箱格式有误，请重新输入！");
+        return false;
+      }
+      let data = { username: loginForm.email, model: "login" };
+      GetSms(data)
+        .then(response => {
+          console.log(response);
+        })
+        .catch(error => {
+          console.log(error);
+        });
+    };
+    /**
+     *  生命周期
+     */
+    //  挂载完成后
+    onMounted(() => {
+      console.log(process.env.NODE_ENV);
+    });
+    return {
+      navTab,
+      loginForm,
+      model,
+      toggleTab,
+      submit,
+      rules,
+      submitBtn,
+      getCode,
+      submitDisable
+    };
   }
 };
 </script>
