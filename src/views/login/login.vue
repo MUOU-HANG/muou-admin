@@ -2,7 +2,7 @@
  * @Description:登录页
  * @Author: ZHAN HANG
  * @Date: 2020-05-05 14:52:06
- * @LastEditTime: 2020-05-08 15:26:28
+ * @LastEditTime: 2020-05-10 19:48:03
  * @LastEditors: ZHAN HANG
  -->
 <template>
@@ -65,8 +65,12 @@
                 ></el-input>
               </el-col>
               <el-col :span="10">
-                <el-button type="success" class="block" @click="getCode"
-                  >获取验证码</el-button
+                <el-button
+                  type="success"
+                  class="block"
+                  @click="getCode"
+                  :disabled="checkCodeBtn.status"
+                  >{{ checkCodeBtn.text }}</el-button
                 >
               </el-col>
             </el-row>
@@ -74,8 +78,8 @@
           <el-button
             type="primary"
             class="block"
-            @click="submit()"
-            :disabled="submitDisable"
+            @click="submit('loginForm')"
+            :disabled="submitBtnStatus"
             >{{ model === "login" ? "登录" : "注册" }}</el-button
           >
         </el-form>
@@ -87,7 +91,7 @@
 
 <script>
 import { reactive, ref, onMounted } from "@vue/composition-api";
-import { GetSms } from "@/api/login";
+import { GetSms, Register, Login } from "@/api/login";
 import {
   strpscript,
   validateVEmail,
@@ -134,8 +138,8 @@ export default {
         callback();
       }
     };
-    /**
-     * 数据区
+    /***************************************************************************************
+     ************************************ 数据区********************************************
      */
     // 登录注册切换,select用于判读是否选中
     const navTab = reactive([
@@ -176,15 +180,23 @@ export default {
         }
       ]
     });
+    // 验证码按钮禁用状态
+    const checkCodeBtn = reactive({
+      status: false,
+      text: "发送验证码"
+    });
     // 重复密码模块值
     const model = ref("login");
     // 提交按钮的值
     const submitBtn = ref("登录");
     // 按钮禁用状态
-    const submitDisable = ref(true);
-    /**
-     * 声明函数
-     */
+    const submitBtnStatus = ref(false);
+    // 倒计时的值
+    const timer = ref(null);
+    /*******************************************************************
+     ************************* 方法声明 ********************************
+     *******************************************************************/
+    // tab的切换
     const toggleTab = item => {
       // 用一个for循环将navTab的select的值改成相反
       navTab.forEach(element => {
@@ -192,11 +204,71 @@ export default {
       });
       item.select = !item.select;
       model.value = item.type;
+      // 跳转回来后默认清空
+      resetForm("loginForm");
+      // 还原验证码按钮的状态和文字
+      resetCheckBtn(false, "发送验证码");
+      // 清楚定时器
+      clearCountDown();
+    };
+    // 清空表单
+    const resetForm = formName => {
+      refs[formName].resetFields();
+    };
+    // 提交按钮
+    const submit = formName => {
+      refs[formName].validate(valid => {
+        if (valid) {
+          model.value === "login" ? login() : register();
+        }
+      });
     };
     // 登录
-    const submit = () => {
-      if (submitBtn.value == "登录") console.log("login");
-      else console.log("register");
+    const login = () => {
+      root.$router.push("/console");
+      return false;
+      let loginData = {
+        username: loginForm.email,
+        password: loginForm.password,
+        code: loginForm.checkCode,
+        module: "login"
+      };
+      Login(loginData)
+        .then(response => {
+          root.$massage.success("登录成功！");
+          root.$router.push("/console");
+        })
+        .catch(error => {
+          root.$message.error("登录失败！");
+        });
+    };
+    // 注册
+    const register = () => {
+      console.log("register");
+      let requestData = {
+        username: loginForm.email,
+        password: loginForm.password,
+        code: loginForm.checkCode,
+        module: "register"
+      };
+      console.log(requestData);
+      Register(requestData)
+        .then(response => {
+          root.$message.success("注册成功！");
+          toggleTab(navTab[0]);
+          // 还原验证码按钮的状态和文字
+          resetCheckBtn(false, "发送验证码");
+          // 清楚计时器
+          clearCountDown();
+        })
+        .catch(error => {
+          root.$message.error("注册失败！");
+        });
+    };
+    // 还原验证码按钮的状态和文字 status:按钮状态，text：按钮文字
+    const resetCheckBtn = (status, text) => {
+      checkCodeBtn.status = status;
+      checkCodeBtn.text = text;
     };
     // 获取验证码
     const getCode = () => {
@@ -208,14 +280,44 @@ export default {
         root.$message.error("邮箱格式有误，请重新输入！");
         return false;
       }
-      let data = { username: loginForm.email, model: "login" };
-      GetSms(data)
-        .then(response => {
-          console.log(response);
-        })
-        .catch(error => {
-          console.log(error);
-        });
+      // 修改验证码按钮的状态
+      resetCheckBtn(true, "发送中...");
+      let data = { username: loginForm.email, module: model.value };
+      // 延时时间
+      setTimeout(() => {
+        GetSms(data)
+          .then(response => {
+            // 调用计时器
+            root.$message.success("验证码发送成功！");
+            submitBtnStatus.value = false;
+            countDown(5);
+            console.log(response);
+          })
+          .catch(error => {
+            resetCheckBtn(false, "发送验证码");
+            console.log(error);
+          });
+      }, 1000);
+    };
+    // 倒计时
+    const countDown = number => {
+      if (timer.value) {
+        clearInterval(timer.value);
+      }
+      let time = number;
+      timer.value = setInterval(() => {
+        time--;
+        if (time === 0) {
+          clearInterval(timer.value);
+          resetCheckBtn(false, "重新发送");
+        } else {
+          checkCodeBtn.text = `倒计时${time}秒`;
+        }
+      }, 1000);
+    };
+    // 清除倒计时
+    const clearCountDown = () => {
+      clearInterval(timer.value);
     };
     /**
      *  生命周期
@@ -225,15 +327,18 @@ export default {
       console.log(process.env.NODE_ENV);
     });
     return {
-      navTab,
-      loginForm,
-      model,
-      toggleTab,
-      submit,
-      rules,
-      submitBtn,
-      getCode,
-      submitDisable
+      navTab, // 登录注册切换
+      loginForm, // 登录表单
+      resetForm, // 清除表单内容
+      model, // 模块值
+      toggleTab, // 点击
+      submit, // 提交按钮
+      rules, // 验证规则
+      submitBtn, // 提交按钮的方法
+      getCode, // 获取验证码的方法
+      submitBtnStatus, // 提交按钮的值
+      checkCodeBtn, // 验证码的值
+      timer // 倒计时的值
     };
   }
 };

@@ -2,7 +2,7 @@
  * @Description:
  * @Author: ZHAN HANG
  * @Date: 2020-05-05 17:08:16
- * @LastEditTime: 2020-05-08 14:02:13
+ * @LastEditTime: 2020-05-12 16:01:06
  * @LastEditors: ZHAN HANG
  */
 const path = require('path')
@@ -13,6 +13,15 @@ module.exports = {
   assetsDir: 'assets',
   lintOnSave: false,
   chainWebpack: (config) => {
+    const svgRule = config.module.rule("svg");
+    svgRule.uses.clear();
+    svgRule
+      .use("svg-sprite-loader")
+      .loader("svg-sprite-loader")
+      .options({
+        symbolId: "icon-[name]",
+        include: ["./src/icons"]
+      });
     config.resolve.symlinks(true) //热更新
   },
   configureWebpack: (config) => {
@@ -49,6 +58,7 @@ module.exports = {
       resolve: {
         extensions: ['.js', '.vue', '.json'],//请求本地json
         alias: {
+          'vue': 'vue/dist/vue.js',
           '@': path.resolve(__dirname, './src'),
           '@components': path.resolve(__dirname, './src/components'),
           '@pages': path.resolve(__dirname, './src/pages')
@@ -62,9 +72,13 @@ module.exports = {
     // 是否使用css分离插件 ExtractTextPlugin
     extract: true,
     // 开启 CSS source maps?是否在构建样式地图，false将提高构建速度
-    sourceMap: false,
+    sourceMap: true,
     // css预设器配置项
-    loaderOptions: {},
+    loaderOptions: {
+      sass: {
+        prependData: `@import "~@/styles/main.scss";`
+      }
+    },
     // 启用 CSS modules for all css / pre-processor files.
     requireModuleExtension: true
   },

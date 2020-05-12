@@ -2,7 +2,7 @@
  * @Description: 拦截器
  * @Author: ZHAN HANG
  * @Date: 2020-05-07 14:16:18
- * @LastEditTime: 2020-05-08 15:09:24
+ * @LastEditTime: 2020-05-08 17:49:51
  * @LastEditors: ZHAN HANG
  */
 import axios from "axios";
@@ -11,7 +11,7 @@ const BASEURL = process.env.NODE_ENV === "production" ? "" : "/devApi";
 // 创建axios，赋给变量service
 const service = axios.create({
   baseURL: BASEURL,
-  timeout: 1000
+  timeout: 15000
 });
 // 添加请求拦截器
 service.interceptors.request.use(

@@ -2,7 +2,7 @@
  * @Description:
  * @Author: ZHAN HANG
  * @Date: 2020-05-05 14:48:34
- * @LastEditTime: 2020-05-08 10:52:28
+ * @LastEditTime: 2020-05-12 09:13:16
  * @LastEditors: ZHAN HANG
  */
 import Vue from "vue";
@@ -12,7 +12,7 @@ import "element-ui/lib/theme-chalk/index.css";
 import App from "./App.vue";
 import router from "./router";
 import store from "./store";
-
+import './icons';
 Vue.config.productionTip = false;
 Vue.use(ElementUI);
 Vue.use(VueComposition);
