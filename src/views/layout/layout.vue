@@ -2,31 +2,21 @@
  * @Description:layout布局
  * @Author: ZHAN HANG
  * @Date: 2020-05-10 19:50:13
- * @LastEditTime: 2020-05-10 20:14:15
+ * @LastEditTime: 2020-05-14 20:04:20
  * @LastEditors: ZHAN HANG
  -->
 <template>
-  <div>
-    <el-container>
-      <el-aside>
-        <!-- Aside content -->
-        <Nav></Nav>
-      </el-aside>
-      <el-container>
-        <el-header>
-          <!-- Header content -->
-          <Header></Header>
-        </el-header>
-        <el-main>
-          <!-- Main content -->
-          <Main></Main>
-        </el-main>
-      </el-container>
-    </el-container>
+  <div id="layout" :class="[menuStatus ? 'close' : 'open']">
+    <Nav></Nav>
+    <Header></Header>
+    <Main>
+      <router-view />
+    </Main>
   </div>
 </template>
 
 <script>
+import { computed } from "@vue/composition-api";
 import Header from "./components/header";
 import Nav from "./components/nav";
 import Main from "./components/main";
@@ -37,9 +27,19 @@ export default {
     Nav,
     Main
   },
-  setup() {}
+  setup(props, { root }) {
+    /**
+     *  computed 监听
+     **/
+    const menuStatus = computed(() => root.$store.state.isCollapse);
+
+    /* 返回数据 */
+    return {
+      menuStatus // 菜单的收缩与展开
+    };
+  }
 };
 </script>
 
-<style>
+<style lang="scss" scoped>
 </style>

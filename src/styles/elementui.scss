@@ -1,3 +1,7 @@
+// 去除menu的右侧白边
+.el-menu{
+  border-right: none !important;
+}
 .el-submenu .el-menu-item{
   font-size: 14px;
   color:#fff;
@@ -6,7 +10,6 @@
     background-color: rgba(245,108,108,0.2) !important;
   }
 }
-
 // 修改一级标题样式
 li .el-submenu{
   &.is-active.is-opened .el-submenu_title{

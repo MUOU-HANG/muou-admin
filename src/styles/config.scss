@@ -2,9 +2,33 @@
  * @Description:
  * @Author: ZHAN HANG
  * @Date: 2020-05-11 17:38:28
- * @LastEditTime: 2020-05-12 07:18:39
+ * @LastEditTime: 2020-05-14 19:03:13
  * @LastEditors: ZHAN HANG
  */
+ *,body{
+   margin:0px;
+   padding:0px;
+ }
+ body{
+   font-size: 14px;
+ }
 /* 后台框架尺寸 */
-// 菜单宽度
-$navMenu: 200px;
+// 菜单展开宽度
+$navMenuOpen: 200px;
+// 菜单收缩宽度
+$navMenuClose: 64px;
+// 头部导航的高度
+$layoutHeader:75px;
+
+/* svg尺寸 */
+$svgSize: 20px;  // svg图片的宽高
+
+/* 自定义封装 */
+// 浏览器适配动画效果
+@mixin webkit($type, $value) {
+  -webkit-#{$type}: $value;
+  -moz-#{$type}: $value;
+  -o-#{$type}: $value;
+  -ms-#{$type}: $value;
+  #{$type}: $value;
+}

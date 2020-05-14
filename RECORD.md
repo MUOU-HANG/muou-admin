@@ -2,7 +2,7 @@
  * @Description:记录项目开发的流程、步骤以及碰到的问题
  * @Author: ZHAN HANG
  * @Date: 2020-05-09 11:55:38
- * @LastEditTime: 2020-05-12 19:59:20
+ * @LastEditTime: 2020-05-14 14:57:16
  * @LastEditors: ZHAN HANG
  -->
 # 第一部分：登录注册
@@ -92,4 +92,14 @@
     }
       requireAll(req)
   3) 在需要用的地方进行引用
+  ```
+  `4. VUEX的使用`
+  ```
+  1) 在store/index.js中存入数据
+  2) 使用this(root).$store.state/getters/commit.xxx来获取
+  3) 当要使用state中的数据做初始值时，要用computed来监听数据。当内部数据发生变化时，可以直接在外部同步改变
+  ```
+  `5. 菜单右侧有白边`、
+  ```
+  修改element的默认样式，在.el-menu中通过设置 border-right 将右侧的边框取消
   ```
