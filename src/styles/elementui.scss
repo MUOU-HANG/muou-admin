@@ -7,12 +7,32 @@
   color:#fff;
   padding-left: 45px !important;
   &.is-active{
-    background-color: rgba(245,108,108,0.2) !important;
+    background-color: $aidColor !important;
   }
 }
 // 修改一级标题样式
 li .el-submenu{
   &.is-active.is-opened .el-submenu_title{
-    background-color: #f56c6c !important;
+    background-color: $mianColor !important;
+  }
+}
+// 修改菜单收缩后背景色
+
+.close{
+  .el-submenu{
+    &.is-opened{
+      > .el-submenu_title{
+        background: $mianColor !important;
+      }
+    }
+  }
+}
+
+.el-menu--vertical{
+  .el-menu-item{
+    background: $mianColor !important;
+  }
+  .el-menu-item:hover{
+    background: $aidHoverColor !important;
   }
 }

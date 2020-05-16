@@ -2,7 +2,7 @@
  * @Description:layout布局
  * @Author: ZHAN HANG
  * @Date: 2020-05-10 19:50:13
- * @LastEditTime: 2020-05-14 20:04:20
+ * @LastEditTime: 2020-05-15 16:35:59
  * @LastEditors: ZHAN HANG
  -->
 <template>
@@ -31,7 +31,7 @@ export default {
     /**
      *  computed 监听
      **/
-    const menuStatus = computed(() => root.$store.state.isCollapse);
+    const menuStatus = computed(() => root.$store.state.app.isCollapse);
 
     /* 返回数据 */
     return {

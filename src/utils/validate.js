@@ -1,5 +1,5 @@
 /*
- * @Description:
+ * @Description: validate.js 文件，各类验证规则
  * @Author: ZHAN HANG
  * @Date: 2020-05-05 17:05:13
  * @LastEditTime: 2020-05-08 15:17:37

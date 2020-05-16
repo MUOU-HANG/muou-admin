@@ -2,22 +2,24 @@
  * @Description: 头部导航
  * @Author: ZHAN HANG
  * @Date: 2020-05-10 19:53:30
- * @LastEditTime: 2020-05-14 20:17:56
+ * @LastEditTime: 2020-05-16 09:28:25
  * @LastEditors: ZHAN HANG
  -->
 <template>
   <div id="header-wrap">
-    <div class="pull-left header-icon" @click="navMenuCollapse">
-      <svg-icon iconClass="menu" className="menu" />
+    <div class="pull-left header-icon">
+      <span @click="navMenuCollapse">
+        <svg-icon iconClass="menu" className="menu" />
+      </span>
     </div>
     <div class="pull-right">
       <div class="headImg">
         <img src="../../../assets/logo.png" alt="" />
       </div>
       <div class="user-info">
-        管理员
+        {{ username }}
       </div>
-      <div class="header-icon">
+      <div class="header-icon" @click="exit">
         <svg-icon iconClass="exit" className="exit" />
       </div>
     </div>
@@ -26,15 +28,45 @@
 
 <script>
 import { ref, reactive } from "@vue/composition-api";
+import { store } from "@/store/modules/login";
 export default {
   name: "Header",
   setup(props, { root }) {
+    /* 数据区 */
+    const username = ref(root.$store.state.login.username);
     /* 方法 */
     const navMenuCollapse = () => {
-      root.$store.commit("SET_COLLAPSE");
+      root.$store.commit("app/SET_COLLAPSE");
     };
+    const exit = () => {
+      root
+        .$confirm("是否退出登录", "退出", {
+          confirmButtonText: "退出",
+          cancelButtonText: "返回",
+          type: "warning",
+          center: true
+        })
+        .then(() => {
+          root.$message({
+            type: "success",
+            message: "已退出!"
+          });
+          root.$store.dispatch("login/exit").then(() => {
+            root.$router.push("/login");
+          });
+        })
+        .catch(() => {
+          root.$message({
+            type: "info",
+            message: "已取消退出"
+          });
+        });
+    };
+
     return {
-      navMenuCollapse // 控制菜单的收缩与展开
+      navMenuCollapse, // 控制菜单的收缩与展开
+      username,
+      exit
     };
   }
 };

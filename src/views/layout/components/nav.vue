@@ -2,7 +2,7 @@
  * @Description:侧边导航
  * @Author: ZHAN HANG
  * @Date: 2020-05-10 19:51:43
- * @LastEditTime: 2020-05-14 20:14:40
+ * @LastEditTime: 2020-05-15 16:35:09
  * @LastEditors: ZHAN HANG
  -->
 <template>
@@ -53,7 +53,7 @@ export default {
      *  computed 监听
      */
     //  ES6：computed:当只有一条语句时，可以不写{return xxxxxx}，直接写xxxxx
-    const isCollapse = computed(() => root.$store.state.isCollapse);
+    const isCollapse = computed(() => root.$store.state.app.isCollapse);
     /*方法 */
     /* 返回 */
     return {
@@ -69,8 +69,9 @@ export default {
 .logo {
   text-align: center;
   img {
-    margin: 28px auto 25px;
+    margin: 15px auto 15px;
     width: 92px;
+    @include webkit(transition, all 0.3s ease 0s);
   }
 }
 #nav-wrap {
@@ -91,8 +92,7 @@ export default {
   }
   .logo {
     img {
-      width: 35px;
-      height: 35px;
+      width: 70%;
     }
   }
 }

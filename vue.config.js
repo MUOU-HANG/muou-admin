@@ -2,7 +2,7 @@
  * @Description:
  * @Author: ZHAN HANG
  * @Date: 2020-05-05 17:08:16
- * @LastEditTime: 2020-05-12 16:01:06
+ * @LastEditTime: 2020-05-15 20:40:57
  * @LastEditors: ZHAN HANG
  */
 const path = require('path')
@@ -98,7 +98,7 @@ module.exports = {
       '/devApi': {
         // 目标 API 地址
         // // target: process.env.VUE_APP_URL,
-        target: "http://www.web-jshtml.cn/productapi",
+        target: "http://www.web-jshtml.cn/productapi/token",
         // 如果要代理 websockets
         ws: false,
         changeOrigin: true, // 允许websockets跨域

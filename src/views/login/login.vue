@@ -1,8 +1,8 @@
 <!--
- * @Description:登录页
+ * @Description:login.vue 登录页
  * @Author: ZHAN HANG
  * @Date: 2020-05-05 14:52:06
- * @LastEditTime: 2020-05-10 19:48:03
+ * @LastEditTime: 2020-05-15 22:08:46
  * @LastEditors: ZHAN HANG
  -->
 <template>
@@ -148,8 +148,8 @@ export default {
     ]);
     // 表单绑定数据
     const loginForm = reactive({
-      email: "",
-      password: "",
+      email: "2725780178@qq.com",
+      password: "Dancer3918",
       checkPassword: "",
       checkCode: ""
     });
@@ -225,22 +225,35 @@ export default {
     };
     // 登录
     const login = () => {
-      root.$router.push("/console");
-      return false;
       let loginData = {
         username: loginForm.email,
         password: loginForm.password,
         code: loginForm.checkCode,
         module: "login"
       };
-      Login(loginData)
-        .then(response => {
-          root.$massage.success("登录成功！");
-          root.$router.push("/console");
-        })
-        .catch(error => {
-          root.$message.error("登录失败！");
-        });
+      // 使用vuex进行登录
+      root.$store.dispatch("login/login", loginData).then(res => {
+        console.log("登录成功！");
+        root.$router.push({ name: "Console" });
+      });
+      // .then(response => {
+      //   cnosole.log("login-success");
+      //   console.log(response);
+      // root.$massage.success("登录成功！");
+      //   root.$router.push("/console");
+      // })
+      // .catch(error => {
+      //   root.$message.error("登录失败！");
+      // });
+      // 传统方式
+      // Login(loginData)
+      //   .then(response => {
+      //     root.$massage.success("登录成功！");
+      //     root.$router.push("/console");
+      //   })
+      //   .catch(error => {
+      //     root.$message.error("登录失败！");
+      //   });
     };
     // 注册
     const register = () => {
