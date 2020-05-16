@@ -1,0 +1,38 @@
+// 去除menu的右侧白边
+.el-menu{
+  border-right: none !important;
+}
+.el-submenu .el-menu-item{
+  font-size: 14px;
+  color:#fff;
+  padding-left: 45px !important;
+  &.is-active{
+    background-color: $aidColor !important;
+  }
+}
+// 修改一级标题样式
+li .el-submenu{
+  &.is-active.is-opened .el-submenu_title{
+    background-color: $mianColor !important;
+  }
+}
+// 修改菜单收缩后背景色
+
+.close{
+  .el-submenu{
+    &.is-opened{
+      > .el-submenu_title{
+        background: $mianColor !important;
+      }
+    }
+  }
+}
+
+.el-menu--vertical{
+  .el-menu-item{
+    background: $mianColor !important;
+  }
+  .el-menu-item:hover{
+    background: $aidHoverColor !important;
+  }
+}
