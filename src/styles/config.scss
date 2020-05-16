@@ -1,0 +1,34 @@
+/*
+ * @Description:
+ * @Author: ZHAN HANG
+ * @Date: 2020-05-11 17:38:28
+ * @LastEditTime: 2020-05-15 16:18:08
+ * @LastEditors: ZHAN HANG
+ */
+ body{
+   font-size: 14px;
+ }
+/* 后台框架尺寸 */
+// 菜单展开宽度
+$navMenuOpen: 200px;
+// 菜单收缩宽度
+$navMenuClose: 64px;
+// 头部导航的高度
+$layoutHeader:75px;
+
+/* svg尺寸 */
+$svgSize: 20px;  // svg图片的宽高
+/* 自定义颜色 */
+// 主色
+$mianColor: #f56c6c;
+$aidColor:rgba(245,108,108,0.2);
+$aidHoverColor:rgba(245,108,108,0.9);
+/* 自定义封装 */
+// 浏览器适配动画效果
+@mixin webkit($type, $value) {
+  -webkit-#{$type}: $value;
+  -moz-#{$type}: $value;
+  -o-#{$type}: $value;
+  -ms-#{$type}: $value;
+  #{$type}: $value;
+}
