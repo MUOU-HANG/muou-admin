@@ -2,11 +2,12 @@
  * @Description: 拦截器
  * @Author: ZHAN HANG
  * @Date: 2020-05-07 14:16:18
- * @LastEditTime: 2020-05-08 17:49:51
+ * @LastEditTime: 2020-05-17 07:24:37
  * @LastEditors: ZHAN HANG
  */
 import axios from "axios";
 import { Message } from 'element-ui'
+import { getToken, getUserName } from "./app";
 const BASEURL = process.env.NODE_ENV === "production" ? "" : "/devApi";
 // 创建axios，赋给变量service
 const service = axios.create({
@@ -17,6 +18,8 @@ const service = axios.create({
 service.interceptors.request.use(
   function (config) {
     // 在发送请求之前做些什么
+    config.headers['tokey'] = getToken();
+    config.headers['UserName'] = getUserName();
     return config;
   },
   function (error) {

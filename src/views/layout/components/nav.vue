@@ -2,7 +2,7 @@
  * @Description:侧边导航
  * @Author: ZHAN HANG
  * @Date: 2020-05-10 19:51:43
- * @LastEditTime: 2020-05-15 16:35:09
+ * @LastEditTime: 2020-05-23 13:41:23
  * @LastEditors: ZHAN HANG
  -->
 <template>
@@ -27,12 +27,14 @@
             />
             <span slot="title" v-if="item.meta">{{ item.meta.name }}</span>
           </template>
-          <el-menu-item
-            v-for="(subItem, subIndex) in item.children"
-            :key="subIndex"
-            :index="subItem.path"
-            >{{ subItem.meta.name }}
-          </el-menu-item>
+          <template v-for="(subItem, subIndex) in item.children">
+            <el-menu-item
+              v-if="!subItem.hidden"
+              :key="subIndex"
+              :index="subItem.path"
+              >{{ subItem.meta.name }}
+            </el-menu-item>
+          </template>
         </el-submenu>
       </template>
     </el-menu>

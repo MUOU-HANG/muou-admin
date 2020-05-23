@@ -2,11 +2,11 @@
  * @Description:
  * @Author: ZHAN HANG
  * @Date: 2020-05-15 16:32:07
- * @LastEditTime: 2020-05-16 09:08:36
+ * @LastEditTime: 2020-05-22 18:59:35
  * @LastEditors: ZHAN HANG
  */
 import { Login } from "@/api/login";
-import { setToken, setUserName, removeToken, removeUserName, getUserName } from "../../utils/app";
+import { setToken, setUserName, removeToken, removeUserName, getUserName } from "@/utils/app";
 // state: 储存初始化数据，取值：this.$store.state.xxx
 const state = {
   to_ken: "",
@@ -32,7 +32,6 @@ const actions = {
   login ({ commit }, loginData) {
     return new Promise((resolve, reject) => {
       Login(loginData).then((response) => {
-        console.log(response)
         let data = response.data.data;
         commit('SET_TOKEN', data.token);
         commit('SET_USERNAME', data.username);

@@ -2,7 +2,7 @@
  * @Description:
  * @Author: ZHAN HANG
  * @Date: 2020-05-05 14:48:34
- * @LastEditTime: 2020-05-12 19:49:59
+ * @LastEditTime: 2020-05-22 22:49:55
  * @LastEditors: ZHAN HANG
  */
 import Vue from "vue";
@@ -74,6 +74,15 @@ const routes = [
         name: "信息分类",
       },
       component: (() => import("../views/info/infoCategory.vue"))
+    },
+    {
+      path: "/infoDetails",
+      name: "InfoDetails",
+      hidden: true,
+      meta: {
+        name: "信息详情",
+      },
+      component: (() => import("../views/info/details.vue"))
     }]
   },
   {

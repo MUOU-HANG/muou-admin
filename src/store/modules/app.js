@@ -2,7 +2,7 @@
  * @Description:
  * @Author: ZHAN HANG
  * @Date: 2020-05-15 16:32:07
- * @LastEditTime: 2020-05-15 16:53:26
+ * @LastEditTime: 2020-05-16 22:37:38
  * @LastEditors: ZHAN HANG
  */
 // state: 储存初始化数据，取值：this.$store.state.xxx
@@ -20,7 +20,7 @@ const mutations = {
     state.isCollapse = !state.isCollapse;
     // H5本地存储
     sessionStorage.setItem('isCollapse', JSON.stringify(state.isCollapse))
-  }
+  },
 }
 // 处理mutations中已经写好的方法,处理异步操作,可以回调
 const actions = {

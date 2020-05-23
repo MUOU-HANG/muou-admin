@@ -1,3 +1,4 @@
+/* element-ui样式 */
 // 去除menu的右侧白边
 .el-menu{
   border-right: none !important;
@@ -35,4 +36,10 @@ li .el-submenu{
   .el-menu-item:hover{
     background: $aidHoverColor !important;
   }
+}
+
+/* dialog 样式 */
+.el-dialog__footer{
+  text-align: center !important;
+  background-color: red;
 }

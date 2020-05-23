@@ -2,7 +2,7 @@
  * @Description: 头部导航
  * @Author: ZHAN HANG
  * @Date: 2020-05-10 19:53:30
- * @LastEditTime: 2020-05-16 09:28:25
+ * @LastEditTime: 2020-05-23 09:19:25
  * @LastEditors: ZHAN HANG
  -->
 <template>
@@ -74,13 +74,13 @@ export default {
 
 <style lang="scss" scoped>
 #header-wrap {
-  height: 75px;
+  // height: 75px;
   position: fixed;
   top: 0;
   right: 0;
   left: $navMenuOpen;
   background: white;
-  line-height: 75px;
+  line-height: 55px;
   @include webkit(box-shadow, 0 3px 16px 0 rgba(0, 0, 0, 0.1));
   @include webkit(transition, all 0.3s ease 0s);
   .pull-right {
